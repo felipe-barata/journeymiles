@@ -1,0 +1,18 @@
+server:
+  port: 7100
+spring:
+  application:
+    name: journey-miles-service
+  profiles:
+    active: dev
+  datasource:
+    username: myuser
+    password: mypass
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/journey_miles_db
+
+config:
+  aws:
+    region: us-east-1
+    s3_endpoint: "http://localhost:4566"
+    s3_bucket_name: testimonials-pictures
