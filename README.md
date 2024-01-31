@@ -8,9 +8,8 @@ This project is a practice based on Alura's challenge, which consists of creatin
 <p>
 More information about this chalenge can be found in the link bellow
 </p>  
-<a>
-https://www.alura.com.br/challenges/back-end-7
-</a>  
+
+[Alura Backend Challenge 7th Edition](https://www.alura.com.br/challenges/back-end-7)
 
 #### Motivation
 <p>
