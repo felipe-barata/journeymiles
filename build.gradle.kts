@@ -34,6 +34,7 @@ dependencies {
 
     //Kotlin
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
 
     //Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
