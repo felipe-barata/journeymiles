@@ -24,6 +24,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.2.2")
 
     //Database
     implementation("org.flywaydb:flyway-core")
@@ -35,6 +36,7 @@ dependencies {
     //Kotlin
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1")
 
     //Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")

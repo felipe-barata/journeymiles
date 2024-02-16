@@ -1,6 +1,6 @@
-package com.study.alura.challenge.journeymiles.repository
+package com.study.alura.challenge.journeymiles.testimonials.repository
 
-import com.study.alura.challenge.journeymiles.entity.TestimonialEntity
+import com.study.alura.challenge.journeymiles.model.entity.TestimonialEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository

@@ -1,6 +1,13 @@
 server:
   port: 7100
+  servlet:
+    session:
+      timeout: 10m
 spring:
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 6MB
   application:
     name: journey-miles-service
   profiles:
@@ -12,7 +19,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/journey_miles_db
 
 config:
+  variables:
+    testimonials_prefix: "testimonials_"
+    testimonials_s3_bucket_name: testimonials-pictures
   aws:
     region: us-east-1
     s3_endpoint: "http://localhost:4566"
-    s3_bucket_name: testimonials-pictures

@@ -1,4 +1,4 @@
-package com.study.alura.challenge.journeymiles.web.response
+package com.study.alura.challenge.journeymiles.dtos.response
 
 import java.io.Serializable
 

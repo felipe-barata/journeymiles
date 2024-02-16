@@ -1,4 +1,4 @@
-package com.study.alura.challenge.journeymiles.config
+package com.study.alura.challenge.journeymiles.config.infra
 
 import com.amazonaws.client.builder.AwsClientBuilder
 import com.amazonaws.services.s3.AmazonS3
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary
 
 @Configuration
 class AmazonS3ClientProvider(
-        private val awsVars: AmazonS3Vars
+    private val awsVars: AmazonS3Vars
 ) {
 
     private val logger = LogManager.getLogger(AmazonS3ClientProvider::class.java)
@@ -19,9 +19,10 @@ class AmazonS3ClientProvider(
     @Bean(value = ["amazonS3"])
     @Primary
     fun createConfiguration(): AmazonS3 = AmazonS3ClientBuilder.standard().withEndpointConfiguration(
-            AwsClientBuilder.EndpointConfiguration(awsVars.endpoint, awsVars.region)
-    ).build().also {
-        logger.info("Finished Amazon S3 Configuration")
-    }
+        AwsClientBuilder.EndpointConfiguration(awsVars.endpoint, awsVars.region)
+    ).withPathStyleAccessEnabled(true)
+        .build().also {
+            logger.info("Finished Amazon S3 Configuration")
+        }
 
 }
