@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+*.log
+*.log
+c:/temp/SpringBoot2App/application.log
