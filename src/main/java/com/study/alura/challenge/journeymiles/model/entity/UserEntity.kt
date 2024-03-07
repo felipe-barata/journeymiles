@@ -5,22 +5,21 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import java.time.OffsetDateTime
 
-@Entity(name = "testimonials")
-data class TestimonialEntity(
+@Entity(name = "users")
+data class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val testimonial: String,
-    val deponent: String,
+    val name: String,
+    val password: String,
+    val email: String,
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     val updatedAt: OffsetDateTime? = null,
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true)
-    val user: UserEntity? = null
+    @OneToMany(mappedBy = "user")
+    val testimonials: List<TestimonialEntity>? = null
 )

@@ -11,11 +11,14 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
+import com.fasterxml.jackson.module.kotlin.KotlinFeature
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import java.time.format.DateTimeFormatter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 
 @Configuration
 class JacksonConfig {
@@ -24,7 +27,7 @@ class JacksonConfig {
     @Primary
     fun mapper(): ObjectMapper {
         return Jackson2ObjectMapperBuilder.json()
-            .modules(JavaTimeModule())
+            .modules(kotlinModule(), JavaTimeModule())
             .featuresToDisable(
                 SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
             )
@@ -43,4 +46,35 @@ class JacksonConfig {
             .build()
     }
 
+    @Bean(value = ["jacksonMessageConverter"])
+    @Primary
+
+    fun jacksonMessageConverter() = MappingJackson2HttpMessageConverter(
+        mapper()
+    )
+
+    private fun kotlinModule(): KotlinModule {
+        return KotlinModule.Builder()
+            .withReflectionCacheSize(CACHE_SIZE)
+            .configure(
+                KotlinFeature.NullToEmptyCollection, false
+            )
+            .configure(
+                KotlinFeature.NullToEmptyMap, false
+            )
+            .configure(
+                KotlinFeature.NullIsSameAsDefault, false
+            )
+            .configure(
+                KotlinFeature.SingletonSupport, false
+            )
+            .configure(
+                KotlinFeature.StrictNullChecks, false
+            )
+            .build()
+    }
+
+    companion object {
+        private const val CACHE_SIZE = 512
+    }
 }
