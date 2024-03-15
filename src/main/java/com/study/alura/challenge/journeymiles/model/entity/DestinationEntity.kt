@@ -19,5 +19,9 @@ data class DestinationEntity(
     @Column(name = "created_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    val updatedAt: OffsetDateTime? = null
+    val updatedAt: OffsetDateTime? = null,
+    @Column(name = "meta", length = 160)
+    val meta: String,
+    @Column(name = "description")
+    val description: String? = null
 )

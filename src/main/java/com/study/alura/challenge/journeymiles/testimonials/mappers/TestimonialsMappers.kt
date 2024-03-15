@@ -7,7 +7,6 @@ import com.study.alura.challenge.journeymiles.testimonials.dto.response.Testimon
 import java.time.format.DateTimeFormatter
 
 fun CreateTestimonialRequestDTO.toEntity() = TestimonialEntity(
-    //picture = this.picture,
     deponent = this.deponent,
     testimonial = this.testimonial
 )
