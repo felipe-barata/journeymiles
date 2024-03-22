@@ -2,6 +2,7 @@ package com.study.alura.challenge.journeymiles.destinations.service
 
 import com.study.alura.challenge.journeymiles.destinations.dto.request.CreateOrUpdateDestinationRequestDTO
 import com.study.alura.challenge.journeymiles.destinations.dto.response.DestinationsResponseDTO
+import com.study.alura.challenge.journeymiles.destinations.dto.response.SearchDestinationsResponseDTO
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -18,5 +19,7 @@ interface DestinationsService {
 
     fun searchDestinationById(id: Long): DestinationsResponseDTO
 
-    fun searchDestinationByName(name: String, pageable: Pageable): Page<DestinationsResponseDTO>
+    fun getDestinations(pageable: Pageable): Page<DestinationsResponseDTO>
+
+    fun searchDestinationByName(name: String, pageable: Pageable): Page<SearchDestinationsResponseDTO>
 }

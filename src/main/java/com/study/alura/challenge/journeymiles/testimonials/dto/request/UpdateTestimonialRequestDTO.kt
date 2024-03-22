@@ -6,8 +6,8 @@ import java.io.Serializable
 import org.springframework.web.multipart.MultipartFile
 
 data class UpdateTestimonialRequestDTO(
-    @NotNull(message = "The testimonial field is mandatory")
-    @Size(min = 10, max = 500, message = "The testimonial field must bet between 10 and 500 chars")
+    @field:NotNull(message = "The testimonial field is mandatory")
+    @field:Size(min = 10, max = 500, message = "The testimonial field must bet between 10 and 500 chars")
     val testimonial: String,
     val picture: MultipartFile? = null
 ) : Serializable

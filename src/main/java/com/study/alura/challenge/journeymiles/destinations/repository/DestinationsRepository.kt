@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DestinationsRepository : JpaRepository<DestinationEntity, Long> {
 
-    @Query("SELECT * from destinations WHERE name LIKE %:name%", nativeQuery = true)
+    @Query("SELECT * from destinations WHERE LOWER(name) LIKE %:name% ORDER BY name", nativeQuery = true)
     fun searchByName(name: String, pageable: Pageable): Page<DestinationEntity>
 
 }

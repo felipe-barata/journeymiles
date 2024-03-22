@@ -11,6 +11,8 @@ import com.study.alura.challenge.journeymiles.testimonials.repository.AmazonS3Te
 import com.study.alura.challenge.journeymiles.testimonials.repository.TestimonialsRepository
 import com.study.alura.challenge.journeymiles.testimonials.service.TestimonialsService
 import java.time.OffsetDateTime
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -54,7 +56,9 @@ class TestimonialsServiceImpl(
         return updatedTestimonialEntity?.toResponse() ?: throw TestimonialNotFoundException(testimonialId)
     }
 
-    override fun getTestimonials(): List<TestimonialResponseDTO> = testimonialsRepository.findAll().toResponse()
+    override fun getTestimonials(pageable: Pageable): Page<TestimonialResponseDTO> =
+        testimonialsRepository.findAll(pageable).map { it.toResponse() }
+
     override fun getTestimonial(id: Long): TestimonialResponseDTO {
         return testimonialsRepository.findByIdOrNull(id)?.toResponse() ?: throw TestimonialNotFoundException(id)
     }

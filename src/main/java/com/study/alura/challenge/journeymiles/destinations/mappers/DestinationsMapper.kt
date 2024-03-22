@@ -2,6 +2,7 @@ package com.study.alura.challenge.journeymiles.destinations.mappers
 
 import com.study.alura.challenge.journeymiles.destinations.dto.request.CreateOrUpdateDestinationRequestDTO
 import com.study.alura.challenge.journeymiles.destinations.dto.response.DestinationsResponseDTO
+import com.study.alura.challenge.journeymiles.destinations.dto.response.SearchDestinationsResponseDTO
 import com.study.alura.challenge.journeymiles.model.entity.DestinationEntity
 import java.time.format.DateTimeFormatter
 
@@ -24,4 +25,14 @@ fun CreateOrUpdateDestinationRequestDTO.toEntity() = DestinationEntity(
 
 fun List<DestinationEntity>.toResponse() = map {
     it.toResponse()
+}
+
+fun DestinationEntity.toSearchResponseDTO() = SearchDestinationsResponseDTO(
+    name = this.name,
+    id = this.id!!,
+    price = this.price
+)
+
+fun List<DestinationEntity>.toSearchResponseDTO() = map {
+    it.toSearchResponseDTO()
 }

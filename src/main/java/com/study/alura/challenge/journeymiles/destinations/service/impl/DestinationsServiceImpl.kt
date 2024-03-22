@@ -2,8 +2,10 @@ package com.study.alura.challenge.journeymiles.destinations.service.impl
 
 import com.study.alura.challenge.journeymiles.destinations.dto.request.CreateOrUpdateDestinationRequestDTO
 import com.study.alura.challenge.journeymiles.destinations.dto.response.DestinationsResponseDTO
+import com.study.alura.challenge.journeymiles.destinations.dto.response.SearchDestinationsResponseDTO
 import com.study.alura.challenge.journeymiles.destinations.mappers.toEntity
 import com.study.alura.challenge.journeymiles.destinations.mappers.toResponse
+import com.study.alura.challenge.journeymiles.destinations.mappers.toSearchResponseDTO
 import com.study.alura.challenge.journeymiles.destinations.repository.DestinationsRepository
 import com.study.alura.challenge.journeymiles.destinations.service.DestinationsService
 import com.study.alura.challenge.journeymiles.model.exceptions.DestinationNotFoundException
@@ -46,9 +48,13 @@ class DestinationsServiceImpl(
         return destinationsRepository.findByIdOrNull(id)?.toResponse() ?: throw DestinationNotFoundException(id)
     }
 
-    override fun searchDestinationByName(name: String, pageable: Pageable): Page<DestinationsResponseDTO> {
+    override fun getDestinations(pageable: Pageable): Page<DestinationsResponseDTO> {
+        return destinationsRepository.findAll(pageable).map { it.toResponse() }
+    }
+
+    override fun searchDestinationByName(name: String, pageable: Pageable): Page<SearchDestinationsResponseDTO> {
         return destinationsRepository.searchByName(name, pageable).map {
-            it.toResponse()
+            it.toSearchResponseDTO()
         }
     }
 }

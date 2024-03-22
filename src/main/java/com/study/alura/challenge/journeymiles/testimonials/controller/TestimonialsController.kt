@@ -6,8 +6,11 @@ import com.study.alura.challenge.journeymiles.testimonials.dto.response.Testimon
 import com.study.alura.challenge.journeymiles.testimonials.service.TestimonialsService
 import jakarta.validation.Valid
 import org.apache.logging.log4j.LogManager
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/testimonials")
+@Validated
 class TestimonialsController(private val testimonialsService: TestimonialsService) {
 
     private val logger = LogManager.getLogger(this::class.java)
@@ -46,8 +50,8 @@ class TestimonialsController(private val testimonialsService: TestimonialsServic
     }
 
     @GetMapping
-    fun getTestimonials(): ResponseEntity<List<TestimonialResponseDTO>> {
-        return ResponseEntity.ok(testimonialsService.getTestimonials())
+    fun getTestimonials(pageable: Pageable): ResponseEntity<Page<TestimonialResponseDTO>> {
+        return ResponseEntity.ok(testimonialsService.getTestimonials(pageable))
     }
 
     @GetMapping("/{id}")

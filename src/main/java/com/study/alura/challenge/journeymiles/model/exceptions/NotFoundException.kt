@@ -4,7 +4,7 @@ import com.study.alura.challenge.journeymiles.model.enums.ErrorCodeEnum
 import org.springframework.http.HttpStatus
 
 open class NotFoundException(message: String, errorCodeEnum: ErrorCodeEnum) : DomainException(
-    code = errorCodeEnum.code,
+    errorCodeEnum = errorCodeEnum,
     statusCode = HttpStatus.NOT_FOUND,
     message = message
 )
