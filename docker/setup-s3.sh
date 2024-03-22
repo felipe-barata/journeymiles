@@ -22,4 +22,5 @@ awslocal dynamodb create-table \
    --key-schema AttributeName=id,KeyType=HASH \
    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 
+
 echo "DynamoDB Configured"
