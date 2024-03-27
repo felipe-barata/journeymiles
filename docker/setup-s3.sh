@@ -17,10 +17,11 @@ echo "S3 Configured"
 echo "DynamoDB Configuration started"
 
 awslocal dynamodb create-table \
-   --table-name pictures \
-   --attribute-definitions AttributeName=id,AttributeType=S \
+   --table-name s3_object_storage_table \
+   --attribute-definitions AttributeName=id,AttributeType=N \
+    AttributeName=type,AttributeType=S \
    --key-schema AttributeName=id,KeyType=HASH \
+   AttributeName=type,KeyType=RANGE \
    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
-
 
 echo "DynamoDB Configured"

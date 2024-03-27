@@ -25,3 +25,5 @@ config:
   aws:
     region: us-east-1
     s3_endpoint: "http://localhost:4566"
+    dynamodb:
+      endpoint: "http://localhost:4566"
