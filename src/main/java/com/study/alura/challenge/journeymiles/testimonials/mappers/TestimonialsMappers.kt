@@ -1,15 +1,11 @@
 package com.study.alura.challenge.journeymiles.testimonials.mappers
 
 import com.study.alura.challenge.journeymiles.model.entity.TestimonialEntity
-import com.study.alura.challenge.journeymiles.testimonials.dto.request.CreateTestimonialRequestDTO
+import com.study.alura.challenge.journeymiles.model.entity.UserEntity
+import com.study.alura.challenge.journeymiles.testimonials.dto.request.CreateOrUpdateTestimonialRequestDTO
 import com.study.alura.challenge.journeymiles.testimonials.dto.response.TestimonialResponseDTO
 import com.study.alura.challenge.journeymiles.testimonials.dto.response.TestimonialsHomeResponseDTO
 import java.time.format.DateTimeFormatter
-
-fun CreateTestimonialRequestDTO.toEntity() = TestimonialEntity(
-    deponent = this.deponent,
-    testimonial = this.testimonial
-)
 
 fun TestimonialEntity.toResponse() = TestimonialResponseDTO(
     id = this.id!!,
@@ -17,6 +13,12 @@ fun TestimonialEntity.toResponse() = TestimonialResponseDTO(
     testimonial = this.testimonial,
     createdAt = this.createdAt.format(DateTimeFormatter.ISO_DATE_TIME),
     updatedAt = this.updatedAt?.format(DateTimeFormatter.ISO_DATE_TIME)
+)
+
+fun CreateOrUpdateTestimonialRequestDTO.toEntity(userEntity: UserEntity) = TestimonialEntity(
+    deponent = userEntity.name,
+    testimonial = this.testimonial,
+    user = userEntity
 )
 
 fun List<TestimonialEntity>.toResponse() = map {

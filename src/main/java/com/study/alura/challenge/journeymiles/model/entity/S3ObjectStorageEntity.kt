@@ -11,6 +11,6 @@ data class S3ObjectStorageEntity(
     val id: Long,
     @DynamoDBRangeKey(attributeName = "type")
     val type: String,
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "files")
     val files: Set<String>
 )

@@ -20,10 +20,14 @@ spring:
 
 config:
   variables:
-    testimonials_prefix: "testimonials_"
-    testimonials_s3_bucket_name: testimonials-pictures
+    pictures:
+      users-bucket-name: users-pictures
+      destinations-bucket-name: destinations-pictures
   aws:
     region: us-east-1
-    s3_endpoint: "http://localhost:4566"
+    accesskey: myaccesskey
+    secretkey: mysecretkey
+    s3:
+      endpoint: "http://localhost:4566"
     dynamodb:
       endpoint: "http://localhost:4566"

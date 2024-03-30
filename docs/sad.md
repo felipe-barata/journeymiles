@@ -20,7 +20,7 @@ The main purpose for this project is to allow users to view travel destination a
 #### 2. Requirements/Scope
 
 <p>
-To address these requirements the project has three domains with distinct functionalities:
+To address these requirements the project has four domains with distinct functionalities:
 </p>
 
 ###### 1 - Users Domain
@@ -40,6 +40,12 @@ To address these requirements the project has three domains with distinct functi
 - Every user may be able to search destinations based on a search criteria and view the results
 - The details about the destinations can be viewed by any user based on its identifier
 - To perform crud operations on a destination, there will be a security token that is mandatory in every call
+
+###### 4 - Pictures Domain
+
+- Pictures for destinations or users can be uploaded using separate endpoints
+- Every picture will be stored in a specific S3 bucket
+- The paths for these images will be stored in a DynamoDB table
 
 #### 3. Architecture
 

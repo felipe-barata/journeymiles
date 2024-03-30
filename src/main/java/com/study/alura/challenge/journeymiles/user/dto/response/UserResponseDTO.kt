@@ -3,7 +3,7 @@ package com.study.alura.challenge.journeymiles.user.dto.response
 import java.io.Serializable
 import java.time.OffsetDateTime
 
-data class CreateUserResponseDTO(
+data class UserResponseDTO(
     val id: Long,
     val name: String,
     val email: String,

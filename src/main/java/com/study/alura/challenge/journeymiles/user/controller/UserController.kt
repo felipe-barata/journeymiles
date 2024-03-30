@@ -1,7 +1,7 @@
 package com.study.alura.challenge.journeymiles.user.controller
 
 import com.study.alura.challenge.journeymiles.user.dto.request.CreateUserRequestDTO
-import com.study.alura.challenge.journeymiles.user.dto.response.CreateUserResponseDTO
+import com.study.alura.challenge.journeymiles.user.dto.response.UserResponseDTO
 import com.study.alura.challenge.journeymiles.user.service.UserService
 import jakarta.validation.Valid
 import org.apache.logging.log4j.LogManager
@@ -18,7 +18,7 @@ class UserController(private val userService: UserService) {
     private val logger = LogManager.getLogger(this::class.java)
 
     @PostMapping
-    fun create(@RequestBody @Valid createUserRequestDTO: CreateUserRequestDTO): ResponseEntity<CreateUserResponseDTO> {
+    fun create(@RequestBody @Valid createUserRequestDTO: CreateUserRequestDTO): ResponseEntity<UserResponseDTO> {
         return ResponseEntity.ok(
             userService.createUser(createUserRequestDTO).also {
                 logger.info("Created a new user with id: ${it.id}")

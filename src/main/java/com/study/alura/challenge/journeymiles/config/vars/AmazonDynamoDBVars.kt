@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-data class TestimonialsVars(
-    @Value("\${config.variables.testimonials_s3_bucket_name}") val bucketName: String,
-    @Value("\${config.variables.testimonials_prefix}") val filePrefix: String
+data class AmazonDynamoDBVars(
+    @Value("\${config.aws.dynamodb.endpoint}") val endpoint: String,
 )

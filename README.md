@@ -18,6 +18,13 @@ I decided to practice with this project to remember some basic concepts of devel
 So the idea is to take something from scratch and try to apply the best development practices and, of course, always improve my development skills.
 </p>  
 
+<p>
+Since this is just for the studying and learning new stuff, I took some design decisions regarding dealing with images that maybe could be different on a production environment.
+</p>
+<p>
+I will separate the creation of users and destinations from the upload of images, to have more domains and practice DDD, and also to, in the future, have some multiple endpoints to coordinate on a Go written BFF.
+</p>
+
 #### About the project
 
 <p>
