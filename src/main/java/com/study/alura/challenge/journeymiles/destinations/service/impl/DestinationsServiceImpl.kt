@@ -59,4 +59,8 @@ class DestinationsServiceImpl(
             it.toSearchResponseDTO()
         }
     }
+
+    override fun verifyIfDestinationExists(destinationId: Long): Boolean {
+        return runCatching { searchDestinationById(destinationId) }.onFailure { throw it }.isSuccess
+    }
 }

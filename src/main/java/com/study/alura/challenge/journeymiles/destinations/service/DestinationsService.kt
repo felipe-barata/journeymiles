@@ -22,4 +22,6 @@ interface DestinationsService {
     fun getDestinations(pageable: Pageable): Page<DestinationsResponseDTO>
 
     fun searchDestinationByName(name: String, pageable: Pageable): Page<SearchDestinationsResponseDTO>
+
+    fun verifyIfDestinationExists(destinationId: Long): Boolean
 }

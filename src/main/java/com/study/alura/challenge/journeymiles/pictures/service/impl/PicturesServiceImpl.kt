@@ -1,6 +1,7 @@
 package com.study.alura.challenge.journeymiles.pictures.service.impl
 
 import com.study.alura.challenge.journeymiles.config.vars.PictureVars
+import com.study.alura.challenge.journeymiles.destinations.service.DestinationsService
 import com.study.alura.challenge.journeymiles.model.entity.S3ObjectStorageEntity
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum.DESTINATION
@@ -10,32 +11,52 @@ import com.study.alura.challenge.journeymiles.pictures.mappers.toDTO
 import com.study.alura.challenge.journeymiles.pictures.repository.AmazonDynamoDBRepository
 import com.study.alura.challenge.journeymiles.pictures.repository.AmazonS3Repository
 import com.study.alura.challenge.journeymiles.pictures.service.PicturesService
+import com.study.alura.challenge.journeymiles.user.service.UserService
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
 @Service
 class PicturesServiceImpl(
     private val picturesVars: PictureVars,
+    private val userService: UserService,
+    private val destinationsService: DestinationsService,
     private val amazonDynamoDBRepository: AmazonDynamoDBRepository,
     private val amazonS3Repository: AmazonS3Repository
 ) : PicturesService {
-    override fun saveUserProfilePicture(picture: MultipartFile, userId: Long) =
-        savePictures(USER, userId, setOf(picture))
+    override fun saveUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
+        userService.verifyIfUserExists(userId)
+        return savePictures(USER, userId, setOf(picture))
+    }
 
-    override fun updateUserProfilePicture(picture: MultipartFile, userId: Long) =
-        updatePictures(USER, userId, setOf(picture))
 
-    override fun saveDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long) =
-        savePictures(DESTINATION, destinationId, pictures)
+    override fun updateUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
+        userService.verifyIfUserExists(userId)
+        return updatePictures(USER, userId, setOf(picture))
+    }
 
-    override fun updateDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long) =
-        updatePictures(DESTINATION, destinationId, pictures)
+    override fun saveDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
+        destinationsService.verifyIfDestinationExists(destinationId)
+        return savePictures(DESTINATION, destinationId, pictures)
+    }
 
-    override fun getUserProfilePicture(userId: Long): PictureResponseDTO? =
-        getPictures(USER, userId)?.toDTO(getBucket(USER))
 
-    override fun getDestinationsPictures(destinationId: Long): PictureResponseDTO? =
-        getPictures(DESTINATION, destinationId)?.toDTO(getBucket(DESTINATION))
+    override fun updateDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
+        destinationsService.verifyIfDestinationExists(destinationId)
+        return updatePictures(DESTINATION, destinationId, pictures)
+    }
+
+
+    override fun getUserProfilePicture(userId: Long): PictureResponseDTO? {
+        userService.verifyIfUserExists(userId)
+        return getPictures(USER, userId)?.toDTO(getBucket(USER))
+    }
+
+
+    override fun getDestinationsPictures(destinationId: Long): PictureResponseDTO? {
+        destinationsService.verifyIfDestinationExists(destinationId)
+        return getPictures(DESTINATION, destinationId)?.toDTO(getBucket(DESTINATION))
+    }
+
 
     override fun removeUserProfilePicture(userId: Long) {
         removePictures(USER, userId)
@@ -100,3 +121,4 @@ class PicturesServiceImpl(
     private fun formatFileNameInBucket(id: Long, type: PictureTypeEnum, index: Int) = "${type.name}_${id}_$index"
 
 }
+

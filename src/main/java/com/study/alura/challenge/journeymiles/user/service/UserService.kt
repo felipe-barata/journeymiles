@@ -7,4 +7,6 @@ interface UserService {
     fun createUser(createUserRequestDTO: CreateUserRequestDTO): UserResponseDTO
 
     fun findUser(userId: Long): UserResponseDTO
+
+    fun verifyIfUserExists(userId: Long): Boolean
 }

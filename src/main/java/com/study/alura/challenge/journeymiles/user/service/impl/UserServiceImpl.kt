@@ -19,4 +19,8 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
 
     override fun findUser(userId: Long) =
         userRepository.findByIdOrNull(userId)?.toDTO() ?: throw UserNotFoundException(userId)
+
+    override fun verifyIfUserExists(userId: Long): Boolean {
+        return runCatching { findUser(userId) }.onFailure { throw it }.isSuccess
+    }
 }
