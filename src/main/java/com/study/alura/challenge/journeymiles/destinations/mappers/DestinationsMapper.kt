@@ -3,10 +3,10 @@ package com.study.alura.challenge.journeymiles.destinations.mappers
 import com.study.alura.challenge.journeymiles.destinations.dto.request.CreateOrUpdateDestinationRequestDTO
 import com.study.alura.challenge.journeymiles.destinations.dto.response.DestinationsResponseDTO
 import com.study.alura.challenge.journeymiles.destinations.dto.response.SearchDestinationsResponseDTO
-import com.study.alura.challenge.journeymiles.model.entity.DestinationEntity
+import com.study.alura.challenge.journeymiles.model.entity.DestinationsEntity
 import java.time.format.DateTimeFormatter
 
-fun DestinationEntity.toResponse() = DestinationsResponseDTO(
+fun DestinationsEntity.toResponse() = DestinationsResponseDTO(
     id = this.id!!,
     name = this.name,
     price = this.price,
@@ -16,23 +16,23 @@ fun DestinationEntity.toResponse() = DestinationsResponseDTO(
     meta = this.meta
 )
 
-fun CreateOrUpdateDestinationRequestDTO.toEntity() = DestinationEntity(
+fun CreateOrUpdateDestinationRequestDTO.toEntity() = DestinationsEntity(
     name = this.name,
     price = this.price,
     description = this.description,
     meta = this.meta
 )
 
-fun List<DestinationEntity>.toResponse() = map {
+fun List<DestinationsEntity>.toResponse() = map {
     it.toResponse()
 }
 
-fun DestinationEntity.toSearchResponseDTO() = SearchDestinationsResponseDTO(
+fun DestinationsEntity.toSearchResponseDTO() = SearchDestinationsResponseDTO(
     name = this.name,
     id = this.id!!,
     price = this.price
 )
 
-fun List<DestinationEntity>.toSearchResponseDTO() = map {
+fun List<DestinationsEntity>.toSearchResponseDTO() = map {
     it.toSearchResponseDTO()
 }

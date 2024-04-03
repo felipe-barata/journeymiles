@@ -9,6 +9,7 @@ import com.study.alura.challenge.journeymiles.destinations.mappers.toSearchRespo
 import com.study.alura.challenge.journeymiles.destinations.repository.DestinationsRepository
 import com.study.alura.challenge.journeymiles.destinations.service.DestinationsService
 import com.study.alura.challenge.journeymiles.model.exceptions.DestinationNotFoundException
+import java.time.OffsetDateTime
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
@@ -31,7 +32,8 @@ class DestinationsServiceImpl(
                 price = createOrUpdateDestinationRequestDTO.price,
                 name = createOrUpdateDestinationRequestDTO.name,
                 description = createOrUpdateDestinationRequestDTO.description,
-                meta = createOrUpdateDestinationRequestDTO.meta
+                meta = createOrUpdateDestinationRequestDTO.meta,
+                updatedAt = OffsetDateTime.now()
             )
             return destinationsRepository.save(updatedDestination).toResponse()
         } ?: throw DestinationNotFoundException(id)
@@ -56,5 +58,9 @@ class DestinationsServiceImpl(
         return destinationsRepository.searchByName(name, pageable).map {
             it.toSearchResponseDTO()
         }
+    }
+
+    override fun verifyIfDestinationExists(destinationId: Long): Boolean {
+        return runCatching { searchDestinationById(destinationId) }.onFailure { throw it }.isSuccess
     }
 }

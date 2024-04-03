@@ -10,14 +10,15 @@ import jakarta.validation.constraints.Size
 import org.apache.logging.log4j.LogManager
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -31,9 +32,9 @@ class DestinationsController(private val destinationsService: DestinationsServic
 
     @PostMapping
     fun create(
-        @Valid @ModelAttribute createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
+        @Valid @RequestBody createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
     ): ResponseEntity<DestinationsResponseDTO> {
-        return ResponseEntity.ok(
+        return ResponseEntity.status(HttpStatus.CREATED).body(
             destinationsService.createDestination(createOrUpdateDestinationRequestDTO).also { destinationsResponse ->
                 logger.info("Created a new testimonial with id ${destinationsResponse.id} and name: ${destinationsResponse.name}")
             })
@@ -42,7 +43,7 @@ class DestinationsController(private val destinationsService: DestinationsServic
     @PutMapping("/{id}")
     fun update(
         @PathVariable id: Long,
-        @Valid @ModelAttribute createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
+        @Valid @RequestBody createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
     ): ResponseEntity<DestinationsResponseDTO> {
         return ResponseEntity.ok(
             destinationsService.updateDestination(createOrUpdateDestinationRequestDTO, id)
@@ -53,7 +54,7 @@ class DestinationsController(private val destinationsService: DestinationsServic
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> = destinationsService.deleteDestination(id).let {
-        ResponseEntity.accepted().build()
+        ResponseEntity.noContent().build()
     }
 
     @GetMapping
@@ -63,4 +64,15 @@ class DestinationsController(private val destinationsService: DestinationsServic
     ): ResponseEntity<Page<SearchDestinationsResponseDTO>> {
         return ResponseEntity.ok(destinationsService.searchDestinationByName(query.lowercase(), pageable))
     }
+
+    @GetMapping("/all")
+    fun getDestinations(
+        pageable: Pageable
+    ): ResponseEntity<Page<DestinationsResponseDTO>> {
+        return ResponseEntity.ok(destinationsService.getDestinations(pageable))
+    }
+
+    @GetMapping("/{id}")
+    fun searchDestinationById(@PathVariable id: Long): ResponseEntity<DestinationsResponseDTO> =
+        ResponseEntity.ok(destinationsService.searchDestinationById(id))
 }

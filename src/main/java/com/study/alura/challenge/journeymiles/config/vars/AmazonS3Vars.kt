@@ -5,6 +5,5 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 data class AmazonS3Vars(
-    @Value("\${config.aws.region}") val region: String,
-    @Value("\${config.aws.s3_endpoint}") val endpoint: String
+    @Value("\${config.aws.s3.endpoint}") val endpoint: String
 )

@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 @Entity(name = "destinations")
-data class DestinationEntity(
+data class DestinationsEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
