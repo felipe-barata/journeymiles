@@ -24,6 +24,9 @@ Since this is just for the studying and learning new stuff, I took some design d
 <p>
 I will separate the creation of users and destinations from the upload of images, to have more domains and practice DDD, and also to, in the future, have some multiple endpoints to coordinate on a Go written BFF.
 </p>
+<p>
+Also, in a production environment, the pictures paths could have been stored in the same database as the entities, but since I wanted to play a bit with DynamoDB, I`ll be storing them in it.
+</p>
 
 #### About the project
 

@@ -69,7 +69,13 @@ class PicturesServiceImpl(
     private fun getPictures(type: PictureTypeEnum, id: Long) =
         amazonDynamoDBRepository.select(id, type.name)
 
-    private fun removePictures(type: PictureTypeEnum, id: Long) = amazonDynamoDBRepository.delete(id, type.name)
+    private fun removePictures(type: PictureTypeEnum, id: Long) {
+        val bucket = getBucket(type)
+        getPictures(type, id).files.forEach { fileName ->
+            amazonS3Repository.doesPictureExist(fileName, bucket)
+        }
+        amazonDynamoDBRepository.delete(id, type.name)
+    }
 
     private fun savePictures(type: PictureTypeEnum, id: Long, pictures: Set<MultipartFile>): PictureResponseDTO {
         val picturesToSave = mutableSetOf<String>()

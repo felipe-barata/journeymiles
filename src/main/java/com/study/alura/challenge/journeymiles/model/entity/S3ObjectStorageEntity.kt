@@ -8,9 +8,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable
 @DynamoDBTable(tableName = "s3_object_storage_table")
 data class S3ObjectStorageEntity(
     @DynamoDBHashKey(attributeName = "id")
-    val id: Long,
+    var id: Long = 0,
     @DynamoDBRangeKey(attributeName = "type")
-    val type: String,
+    var type: String = "",
     @DynamoDBAttribute(attributeName = "files")
-    val files: Set<String>
+    var files: Set<String> = emptySet()
 )

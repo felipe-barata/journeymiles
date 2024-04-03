@@ -32,7 +32,7 @@ class PicturesController(private val picturesService: PicturesService) {
 
     @PutMapping("/users/{id}")
     fun updateUserProfilePicture(
-        @RequestParam(value = "pictures") picture: MultipartFile,
+        @RequestParam(value = "picture") picture: MultipartFile,
         @PathVariable(value = "id") userId: Long
     ) =
         ResponseEntity.ok(picturesService.updateUserProfilePicture(picture, userId))
