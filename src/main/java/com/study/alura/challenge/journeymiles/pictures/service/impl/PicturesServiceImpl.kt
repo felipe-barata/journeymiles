@@ -6,6 +6,7 @@ import com.study.alura.challenge.journeymiles.model.entity.S3ObjectStorageEntity
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum.DESTINATION
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum.USER
+import com.study.alura.challenge.journeymiles.model.exceptions.PictureAlreadyPresentException
 import com.study.alura.challenge.journeymiles.pictures.dto.response.PictureResponseDTO
 import com.study.alura.challenge.journeymiles.pictures.mappers.toDTO
 import com.study.alura.challenge.journeymiles.pictures.repository.AmazonDynamoDBRepository
@@ -25,9 +26,11 @@ class PicturesServiceImpl(
 ) : PicturesService {
     override fun saveUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
         userService.verifyIfUserExists(userId)
+        takeIf { getPictures(USER, userId) != null }?.let {
+            throw PictureAlreadyPresentException(userId, USER.name)
+        }
         return savePictures(USER, userId, setOf(picture))
     }
-
 
     override fun updateUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
         userService.verifyIfUserExists(userId)
@@ -36,27 +39,16 @@ class PicturesServiceImpl(
 
     override fun saveDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
         destinationsService.verifyIfDestinationExists(destinationId)
+        takeIf { getPictures(DESTINATION, destinationId) != null }?.let {
+            throw PictureAlreadyPresentException(destinationId, DESTINATION.name)
+        }
         return savePictures(DESTINATION, destinationId, pictures)
     }
-
 
     override fun updateDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
         destinationsService.verifyIfDestinationExists(destinationId)
         return updatePictures(DESTINATION, destinationId, pictures)
     }
-
-
-    override fun getUserProfilePicture(userId: Long): PictureResponseDTO? {
-        userService.verifyIfUserExists(userId)
-        return getPictures(USER, userId)?.toDTO(getBucket(USER))
-    }
-
-
-    override fun getDestinationsPictures(destinationId: Long): PictureResponseDTO? {
-        destinationsService.verifyIfDestinationExists(destinationId)
-        return getPictures(DESTINATION, destinationId)?.toDTO(getBucket(DESTINATION))
-    }
-
 
     override fun removeUserProfilePicture(userId: Long) {
         removePictures(USER, userId)

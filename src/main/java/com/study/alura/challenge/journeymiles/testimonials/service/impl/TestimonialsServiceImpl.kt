@@ -2,6 +2,7 @@ package com.study.alura.challenge.journeymiles.testimonials.service.impl
 
 import com.study.alura.challenge.journeymiles.model.exceptions.InvalidUserForTestimonialException
 import com.study.alura.challenge.journeymiles.model.exceptions.TestimonialNotFoundException
+import com.study.alura.challenge.journeymiles.pictures.service.impl.GetPicturesServiceImpl
 import com.study.alura.challenge.journeymiles.testimonials.dto.request.CreateOrUpdateTestimonialRequestDTO
 import com.study.alura.challenge.journeymiles.testimonials.dto.response.TestimonialResponseDTO
 import com.study.alura.challenge.journeymiles.testimonials.mappers.toEntity
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Service
 @Service
 class TestimonialsServiceImpl(
     private val testimonialsRepository: TestimonialsRepository,
-    private val userService: UserService
+    private val userService: UserService,
+    private val picturesService: GetPicturesServiceImpl
 ) : TestimonialsService {
     override fun createTestimonial(
         createTestimonialRequestDTO: CreateOrUpdateTestimonialRequestDTO,
@@ -33,31 +35,32 @@ class TestimonialsServiceImpl(
     override fun updateTestimonial(
         createOrUpdateTestimonialRequestDTO: CreateOrUpdateTestimonialRequestDTO, testimonialId: Long, userId: Long
     ): TestimonialResponseDTO {
-        val updatedTestimonialEntity = testimonialsRepository.findByIdOrNull(testimonialId)?.let {
-            isUserAllowedToManageTestimonial(userService.findUser(userId).id, it.user?.id, testimonialId)
-            val testimonialEntity =
-                it.copy(testimonial = createOrUpdateTestimonialRequestDTO.testimonial, updatedAt = OffsetDateTime.now())
-            testimonialsRepository.save(testimonialEntity)
-        }
-        return updatedTestimonialEntity?.toResponse() ?: throw TestimonialNotFoundException(testimonialId)
+        val testimonial = getTestimonialFromDatabase(testimonialId)
+        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, testimonialId)
+        val testimonialEntity =
+            testimonial.copy(
+                testimonial = createOrUpdateTestimonialRequestDTO.testimonial,
+                updatedAt = OffsetDateTime.now()
+            )
+        return testimonialsRepository.save(testimonialEntity).toResponse()
     }
 
     override fun getTestimonials(pageable: Pageable): Page<TestimonialResponseDTO> =
-        testimonialsRepository.findAll(pageable).map { it.toResponse() }
+        testimonialsRepository.findAll(pageable).map {
+            it.toResponse(picturesService.getUserProfilePicture(it.user?.id!!)?.pictures ?: emptySet())
+        }
 
     override fun getTestimonial(id: Long, userId: Long): TestimonialResponseDTO {
-        return testimonialsRepository.findByIdOrNull(id)?.let {
-            isUserAllowedToManageTestimonial(userService.findUser(userId).id, it.user?.id, it.id!!)
-            it.toResponse()
-        } ?: throw TestimonialNotFoundException(id)
+        val testimonial = getTestimonialFromDatabase(id)
+        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, id)
+        return testimonial.toResponse(picturesService.getUserProfilePicture(userId)?.pictures ?: emptySet())
     }
 
     override fun deleteTestimonial(testimonialId: Long, userId: Long): Boolean {
-        testimonialsRepository.findByIdOrNull(testimonialId)?.let {
-            isUserAllowedToManageTestimonial(userService.findUser(userId).id, it.user?.id, testimonialId)
-            testimonialsRepository.delete(it)
-            return true
-        } ?: throw TestimonialNotFoundException(testimonialId)
+        val testimonial = getTestimonialFromDatabase(testimonialId)
+        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, testimonialId)
+        testimonialsRepository.delete(testimonial)
+        return true
     }
 
     private fun isUserAllowedToManageTestimonial(userId: Long, testimonialUserId: Long?, testimonialId: Long) {
@@ -68,4 +71,7 @@ class TestimonialsServiceImpl(
             )
         }
     }
+
+    private fun getTestimonialFromDatabase(testimonialId: Long) =
+        testimonialsRepository.findByIdOrNull(testimonialId) ?: throw TestimonialNotFoundException(testimonialId)
 }

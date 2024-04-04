@@ -8,5 +8,5 @@ data class TestimonialResponseDTO(
         val testimonial: String,
         val createdAt: String,
         val updatedAt: String? = null,
-        val picture: String? = null
+        val pictures: Set<String> = emptySet()
 ): Serializable
