@@ -13,10 +13,6 @@ interface PicturesService {
 
     fun updateDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO
 
-    fun getUserProfilePicture(userId: Long): PictureResponseDTO?
-
-    fun getDestinationsPictures(destinationId: Long): PictureResponseDTO?
-
     fun removeUserProfilePicture(userId: Long)
 
     fun removeDestinationsPictures(destinationId: Long)

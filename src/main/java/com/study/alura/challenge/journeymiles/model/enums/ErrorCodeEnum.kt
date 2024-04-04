@@ -7,6 +7,7 @@ enum class ErrorCodeEnum(val code: Int, val description: String) {
     USER_NOT_FOUND_ERROR(3001, "There is no user with given id"),
     UNSUPPORTED_PICTURE_TYPE_ERROR(4001, "There is no picture with given type"),
     PICTURE_NOT_FOUND_ERROR(8001, "There is no picture with given parameters"),
+    PICTURE_ALREADY_PRESENT_ERROR(8002, "There is already some picture with given parameters"),
     GENERIC_ERROR(9001, "Something went wrong with your request"),
     VALIDATION_ERROR(9002, "Invalid request")
 }

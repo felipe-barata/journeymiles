@@ -10,5 +10,6 @@ data class DestinationsResponseDTO(
     val updatedAt: String? = null,
     val createdAt: String,
     val meta: String,
-    val description: String? = null
+    val description: String? = null,
+    val pictures: Set<String> = emptySet()
 ) : Serializable

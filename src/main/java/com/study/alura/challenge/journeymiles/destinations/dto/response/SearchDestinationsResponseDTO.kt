@@ -7,5 +7,5 @@ data class SearchDestinationsResponseDTO(
     val id: Long,
     val name: String,
     val price: BigDecimal,
-    val picture: String? = null
-): Serializable
+    val pictures: Set<String> = emptySet()
+) : Serializable

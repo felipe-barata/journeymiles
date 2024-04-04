@@ -6,8 +6,6 @@ import org.apache.logging.log4j.LogManager
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -51,25 +49,4 @@ class PicturesController(private val picturesService: PicturesService) {
         @PathVariable(value = "id") destinationId: Long
     ) =
         ResponseEntity.ok(picturesService.updateDestinationsPictures(pictures, destinationId))
-
-    @GetMapping("/users/{id}")
-    fun getUserProfilePicture(@PathVariable(value = "id") userId: Long) =
-        ResponseEntity.ok(picturesService.getUserProfilePicture(userId)) ?: ResponseEntity.noContent().build()
-
-    @GetMapping("/destinations/{id}")
-    fun getDestinationsPictures(@PathVariable(value = "id") destinationId: Long) =
-        ResponseEntity.ok(picturesService.getDestinationsPictures(destinationId)) ?: ResponseEntity.noContent().build()
-
-    @DeleteMapping("/users/{id}")
-    fun removeUserProfilePicture(@PathVariable(value = "id") userId: Long): ResponseEntity<Void> =
-        picturesService.removeUserProfilePicture(userId).let {
-            ResponseEntity.noContent().build()
-        }
-
-    @DeleteMapping("/destinations/{id}")
-    fun removeDestinationsPictures(@PathVariable(value = "id") destinationId: Long): ResponseEntity<Void> =
-        picturesService.removeDestinationsPictures(destinationId).let {
-            ResponseEntity.noContent().build()
-        }
-
 }
