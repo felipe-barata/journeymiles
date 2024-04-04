@@ -1,33 +1,33 @@
 server:
-  port: 7100
+  port: ${APPLICATION_PORT}
   servlet:
     session:
-      timeout: 10m
+      timeout: ${SESSION_TIMEOUT}
 spring:
   servlet:
     multipart:
-      max-file-size: 3MB
-      max-request-size: 6MB
+      max-file-size: ${MAX_FILE_SIZE}
+      max-request-size: ${MAX_REQUEST_SIZE}
   application:
-    name: journey-miles-service
+    name: ${APPLICATION_NAME}
   profiles:
-    active: dev
+    active: ${ACTIVE_PROFILE}
   datasource:
-    username: myuser
-    password: mypass
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/journey_miles_db
+    url: ${DATABASE_HOST}
 
 config:
   variables:
     pictures:
-      users-bucket-name: users-pictures
-      destinations-bucket-name: destinations-pictures
+      users-bucket-name: ${USERS_BUCKET_NAME}
+      destinations-bucket-name: ${DESTINATIONS_BUCKET_NAME}
   aws:
-    region: us-east-1
-    accesskey: myaccesskey
-    secretkey: mysecretkey
+    region: ${AWS_REGION}
+    accesskey: ${AWS_ACCESS_KEY}
+    secretkey: ${AWS_SECRET_KEY}
     s3:
-      endpoint: "http://localhost:4566"
+      endpoint: ${S3_ENDPOINT}
     dynamodb:
-      endpoint: "http://localhost:4566"
+      endpoint: ${DYNAMODB_ENDPOINT}
