@@ -27,6 +27,8 @@ To address these requirements the project has four domains with distinct functio
 
 - Allow a user to register or change their registration in the system
 - Allow registered users to log in/out of the system
+- Users may upload a profile picture, that will be stored in a specific S3 bucket
+- The paths for these images will be stored in a DynamoDB table
 
 ###### 2 - Testimonials Domain
 
@@ -37,15 +39,11 @@ To address these requirements the project has four domains with distinct functio
 ###### 3 - Destinations Domain
 
 - Destinations can be created/updated/deleted in the system
+- There will be possible to upload pictures to a destination, that will be stored in a specific S3 bucket
+- The paths for these images will be stored in a DynamoDB table
 - Every user may be able to search destinations based on a search criteria and view the results
 - The details about the destinations can be viewed by any user based on its identifier
 - To perform crud operations on a destination, there will be a security token that is mandatory in every call
-
-###### 4 - Pictures Domain
-
-- Pictures for destinations or users can be uploaded using separate endpoints
-- Every picture will be stored in a specific S3 bucket
-- The paths for these images will be stored in a DynamoDB table
 
 #### 3. Architecture
 
