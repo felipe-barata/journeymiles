@@ -2,13 +2,14 @@ package com.study.alura.challenge.journeymiles.testimonials.service.impl
 
 import com.study.alura.challenge.journeymiles.model.exceptions.InvalidUserForTestimonialException
 import com.study.alura.challenge.journeymiles.model.exceptions.TestimonialNotFoundException
-import com.study.alura.challenge.journeymiles.pictures.service.impl.GetPicturesServiceImpl
+import com.study.alura.challenge.journeymiles.pictures.service.PicturesService
 import com.study.alura.challenge.journeymiles.testimonials.dto.request.CreateOrUpdateTestimonialRequestDTO
 import com.study.alura.challenge.journeymiles.testimonials.dto.response.TestimonialResponseDTO
 import com.study.alura.challenge.journeymiles.testimonials.mappers.toEntity
 import com.study.alura.challenge.journeymiles.testimonials.mappers.toResponse
 import com.study.alura.challenge.journeymiles.testimonials.repository.TestimonialsRepository
 import com.study.alura.challenge.journeymiles.testimonials.service.TestimonialsService
+import com.study.alura.challenge.journeymiles.user.dto.response.UserDTO
 import com.study.alura.challenge.journeymiles.user.mappers.toEntity
 import com.study.alura.challenge.journeymiles.user.service.UserService
 import java.time.OffsetDateTime
@@ -21,22 +22,21 @@ import org.springframework.stereotype.Service
 class TestimonialsServiceImpl(
     private val testimonialsRepository: TestimonialsRepository,
     private val userService: UserService,
-    private val picturesService: GetPicturesServiceImpl
+    private val picturesService: PicturesService
 ) : TestimonialsService {
     override fun createTestimonial(
         createTestimonialRequestDTO: CreateOrUpdateTestimonialRequestDTO,
-        userId: Long
+        userDTO: UserDTO
     ): TestimonialResponseDTO {
-        val user = userService.findUser(userId)
-        val entity = createTestimonialRequestDTO.toEntity(user.toEntity())
+        val entity = createTestimonialRequestDTO.toEntity(userDTO.toEntity())
         return testimonialsRepository.save(entity).toResponse()
     }
 
     override fun updateTestimonial(
-        createOrUpdateTestimonialRequestDTO: CreateOrUpdateTestimonialRequestDTO, testimonialId: Long, userId: Long
+        createOrUpdateTestimonialRequestDTO: CreateOrUpdateTestimonialRequestDTO, testimonialId: Long, userDTO: UserDTO
     ): TestimonialResponseDTO {
         val testimonial = getTestimonialFromDatabase(testimonialId)
-        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, testimonialId)
+        isUserAllowedToManageTestimonial(userDTO.id, testimonial.user?.id, testimonialId)
         val testimonialEntity =
             testimonial.copy(
                 testimonial = createOrUpdateTestimonialRequestDTO.testimonial,
@@ -50,15 +50,15 @@ class TestimonialsServiceImpl(
             it.toResponse(picturesService.getUserProfilePicture(it.user?.id!!)?.pictures ?: emptySet())
         }
 
-    override fun getTestimonial(id: Long, userId: Long): TestimonialResponseDTO {
+    override fun getTestimonial(id: Long, userDTO: UserDTO): TestimonialResponseDTO {
         val testimonial = getTestimonialFromDatabase(id)
-        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, id)
-        return testimonial.toResponse(picturesService.getUserProfilePicture(userId)?.pictures ?: emptySet())
+        isUserAllowedToManageTestimonial(userDTO.id, testimonial.user?.id, id)
+        return testimonial.toResponse(picturesService.getUserProfilePicture(userDTO.id)?.pictures ?: emptySet())
     }
 
-    override fun deleteTestimonial(testimonialId: Long, userId: Long): Boolean {
+    override fun deleteTestimonial(testimonialId: Long, userDTO: UserDTO): Boolean {
         val testimonial = getTestimonialFromDatabase(testimonialId)
-        isUserAllowedToManageTestimonial(userService.findUser(userId).id, testimonial.user?.id, testimonialId)
+        isUserAllowedToManageTestimonial(userDTO.id, testimonial.user?.id, testimonialId)
         testimonialsRepository.delete(testimonial)
         return true
     }

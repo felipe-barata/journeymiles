@@ -5,13 +5,18 @@ import com.study.alura.challenge.journeymiles.destinations.dto.response.Destinat
 import com.study.alura.challenge.journeymiles.destinations.dto.response.SearchDestinationsResponseDTO
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.web.multipart.MultipartFile
 
 interface DestinationsService {
 
-    fun createDestination(createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO): DestinationsResponseDTO
+    fun createDestination(
+        pictures: Set<MultipartFile>?,
+        createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
+    ): DestinationsResponseDTO
 
     fun updateDestination(
         createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO,
+        pictures: Set<MultipartFile>?,
         id: Long
     ): DestinationsResponseDTO
 

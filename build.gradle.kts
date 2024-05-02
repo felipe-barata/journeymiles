@@ -25,6 +25,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.2")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    // Security
+    implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+    implementation("io.jsonwebtoken:jjwt-impl:0.12.5")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
     //Database
     implementation("org.flywaydb:flyway-core")
@@ -40,6 +46,7 @@ dependencies {
 
     //Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
     implementation(kotlin("stdlib-jdk8"))
 }
 

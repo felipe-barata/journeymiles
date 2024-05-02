@@ -16,4 +16,8 @@ interface PicturesService {
     fun removeUserProfilePicture(userId: Long)
 
     fun removeDestinationsPictures(destinationId: Long)
+
+    fun getUserProfilePicture(userId: Long): PictureResponseDTO?
+
+    fun getDestinationsPictures(destinationId: Long): PictureResponseDTO?
 }

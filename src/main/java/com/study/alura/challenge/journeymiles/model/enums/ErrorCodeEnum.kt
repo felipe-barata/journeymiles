@@ -1,13 +1,21 @@
 package com.study.alura.challenge.journeymiles.model.enums
 
-enum class ErrorCodeEnum(val code: Int, val description: String) {
-    TESTIMONIAL_NOT_FOUND_ERROR(1001, "There is no testimonial with given id"),
-    USER_NOT_RELATED_TO_TESTIMONIAL_ERROR(1002, "There user is not allowed to edit/delete this testimonial"),
-    DESTINATION_NOT_FOUND_ERROR(2001, "There is no destination with given id"),
-    USER_NOT_FOUND_ERROR(3001, "There is no user with given id"),
-    UNSUPPORTED_PICTURE_TYPE_ERROR(4001, "There is no picture with given type"),
-    PICTURE_NOT_FOUND_ERROR(8001, "There is no picture with given parameters"),
-    PICTURE_ALREADY_PRESENT_ERROR(8002, "There is already some picture with given parameters"),
-    GENERIC_ERROR(9001, "Something went wrong with your request"),
-    VALIDATION_ERROR(9002, "Invalid request")
+enum class ErrorCodeEnum(val code: Int) {
+    TESTIMONIAL_NOT_FOUND_ERROR(1001),
+    USER_NOT_RELATED_TO_TESTIMONIAL_ERROR(1002),
+    DESTINATION_NOT_FOUND_ERROR(2001),
+    USER_NOT_FOUND_ERROR(3001),
+    USER_NOT_FOUND_BY_EMAIL_ERROR(3002),
+    USERNAME_NOT_PROVIDED_ERROR(3003),
+    USERNAME_ALREADY_EXISTS_ERROR(3004),
+    UNSUPPORTED_PICTURE_TYPE_ERROR(4001),
+    PICTURE_NOT_FOUND_ERROR(8001),
+    PICTURE_ALREADY_PRESENT_ERROR(8002),
+    GENERIC_ERROR(9001),
+    VALIDATION_ERROR(9002),
+    BAD_CREDENTIALS_ERROR(9003),
+    AUTHENTICATION_NOT_PRESENT_ERROR(9004),
+    EXPIRED_REFRESH_TOKEN_ERROR(9005),
+    EXPIRED_TOKEN_ERROR(9007),
+    ;
 }
