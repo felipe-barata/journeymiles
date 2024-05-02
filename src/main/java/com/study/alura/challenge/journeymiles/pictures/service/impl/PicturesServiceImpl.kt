@@ -1,52 +1,37 @@
 package com.study.alura.challenge.journeymiles.pictures.service.impl
 
 import com.study.alura.challenge.journeymiles.config.vars.PictureVars
-import com.study.alura.challenge.journeymiles.destinations.service.DestinationsService
 import com.study.alura.challenge.journeymiles.model.entity.S3ObjectStorageEntity
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum.DESTINATION
 import com.study.alura.challenge.journeymiles.model.enums.PictureTypeEnum.USER
-import com.study.alura.challenge.journeymiles.model.exceptions.PictureAlreadyPresentException
 import com.study.alura.challenge.journeymiles.pictures.dto.response.PictureResponseDTO
 import com.study.alura.challenge.journeymiles.pictures.mappers.toDTO
 import com.study.alura.challenge.journeymiles.pictures.repository.AmazonDynamoDBRepository
 import com.study.alura.challenge.journeymiles.pictures.repository.AmazonS3Repository
 import com.study.alura.challenge.journeymiles.pictures.service.PicturesService
-import com.study.alura.challenge.journeymiles.user.service.UserService
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
 @Service
 class PicturesServiceImpl(
     private val picturesVars: PictureVars,
-    private val userService: UserService,
-    private val destinationsService: DestinationsService,
     private val amazonDynamoDBRepository: AmazonDynamoDBRepository,
     private val amazonS3Repository: AmazonS3Repository
 ) : PicturesService {
     override fun saveUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
-        userService.verifyIfUserExists(userId)
-        takeIf { getPictures(USER, userId) != null }?.let {
-            throw PictureAlreadyPresentException(userId, USER.name)
-        }
         return savePictures(USER, userId, setOf(picture))
     }
 
     override fun updateUserProfilePicture(picture: MultipartFile, userId: Long): PictureResponseDTO {
-        userService.verifyIfUserExists(userId)
         return updatePictures(USER, userId, setOf(picture))
     }
 
     override fun saveDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
-        destinationsService.verifyIfDestinationExists(destinationId)
-        takeIf { getPictures(DESTINATION, destinationId) != null }?.let {
-            throw PictureAlreadyPresentException(destinationId, DESTINATION.name)
-        }
         return savePictures(DESTINATION, destinationId, pictures)
     }
 
     override fun updateDestinationsPictures(pictures: Set<MultipartFile>, destinationId: Long): PictureResponseDTO {
-        destinationsService.verifyIfDestinationExists(destinationId)
         return updatePictures(DESTINATION, destinationId, pictures)
     }
 
@@ -56,6 +41,14 @@ class PicturesServiceImpl(
 
     override fun removeDestinationsPictures(destinationId: Long) {
         removePictures(DESTINATION, destinationId)
+    }
+
+    override fun getUserProfilePicture(userId: Long): PictureResponseDTO? {
+        return getPictures(PictureTypeEnum.USER, userId)?.toDTO(getBucket(PictureTypeEnum.USER))
+    }
+
+    override fun getDestinationsPictures(destinationId: Long): PictureResponseDTO? {
+        return getPictures(PictureTypeEnum.DESTINATION, destinationId)?.toDTO(getBucket(PictureTypeEnum.DESTINATION))
     }
 
     private fun getPictures(type: PictureTypeEnum, id: Long) =

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/destinations")
@@ -31,28 +33,34 @@ class DestinationsController(private val destinationsService: DestinationsServic
     private val logger = LogManager.getLogger(this::class.java)
 
     @PostMapping
+    @Secured("ROLE_SERVICE")
     fun create(
+        @RequestParam(value = "pictures", required = false) pictures: Set<MultipartFile>?,
         @Valid @RequestBody createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
     ): ResponseEntity<DestinationsResponseDTO> {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            destinationsService.createDestination(createOrUpdateDestinationRequestDTO).also { destinationsResponse ->
-                logger.info("Created a new testimonial with id ${destinationsResponse.id} and name: ${destinationsResponse.name}")
-            })
+            destinationsService.createDestination(pictures, createOrUpdateDestinationRequestDTO)
+                .also { destinationsResponse ->
+                    logger.info("Created a new testimonial with id ${destinationsResponse.id} and name: ${destinationsResponse.name}")
+                })
     }
 
     @PutMapping("/{id}")
+    @Secured("ROLE_SERVICE")
     fun update(
         @PathVariable id: Long,
+        @RequestParam(value = "pictures", required = false) pictures: Set<MultipartFile>?,
         @Valid @RequestBody createOrUpdateDestinationRequestDTO: CreateOrUpdateDestinationRequestDTO
     ): ResponseEntity<DestinationsResponseDTO> {
         return ResponseEntity.ok(
-            destinationsService.updateDestination(createOrUpdateDestinationRequestDTO, id)
+            destinationsService.updateDestination(createOrUpdateDestinationRequestDTO, pictures, id)
                 .also { destinationsResponse ->
                     logger.info("Updated a testimonial with id ${destinationsResponse.id} and name: ${destinationsResponse.name}")
                 })
     }
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_SERVICE")
     fun delete(@PathVariable id: Long): ResponseEntity<Void> = destinationsService.deleteDestination(id).let {
         ResponseEntity.noContent().build()
     }

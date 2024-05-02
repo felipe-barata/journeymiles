@@ -2,7 +2,7 @@ package com.study.alura.challenge.journeymiles.user.mappers
 
 import com.study.alura.challenge.journeymiles.model.entity.UserEntity
 import com.study.alura.challenge.journeymiles.user.dto.request.CreateUserRequestDTO
-import com.study.alura.challenge.journeymiles.user.dto.response.UserResponseDTO
+import com.study.alura.challenge.journeymiles.user.dto.response.UserDTO
 
 fun CreateUserRequestDTO.toEntity() = UserEntity(
     name = this.name,
@@ -10,7 +10,7 @@ fun CreateUserRequestDTO.toEntity() = UserEntity(
     password = this.password
 )
 
-fun UserEntity.toDTO() = UserResponseDTO(
+fun UserEntity.toDTO() = UserDTO(
     name = this.name,
     email = this.email,
     createdAt = this.createdAt,
@@ -18,7 +18,7 @@ fun UserEntity.toDTO() = UserResponseDTO(
     id = this.id!!
 )
 
-fun UserResponseDTO.toEntity() = UserEntity(
+fun UserDTO.toEntity() = UserEntity(
     id = this.id,
     name = this.name,
     email = this.email,

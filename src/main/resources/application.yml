@@ -1,3 +1,10 @@
+app:
+  version: ${APPLICATION_VERSION}
+  auth:
+    ignorePaths: /healthcheck,/info,/actuator/health,/webjars/**,/swagger-ui.html,/swagger-ui/**,/swagger-resources,/swagger-resources/**,/swagger.yaml,/docs,/v3/api-docs/**
+springdoc:
+  paths-to-exclude: /swagger-resources/**,/v2/api-docs,/health-check
+
 server:
   port: ${APPLICATION_PORT}
   servlet:
@@ -19,6 +26,11 @@ spring:
     url: ${DATABASE_HOST}
 
 config:
+  security:
+    shared-secret: ${SHARED_SECRET_KEY}
+    jwt-secret: ${JWT_SEED}
+    token-expiration: ${JWT_DURATION}
+    refresh-token-expiration: ${REFRESH_TOKEN_DURATION}
   variables:
     pictures:
       users-bucket-name: ${USERS_BUCKET_NAME}
